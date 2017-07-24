@@ -27,6 +27,7 @@ def index(request):
     return HttpResponse(template.render({},request))
 
 def soundsearch(request):
+    page=1
     rq=request.POST
     fl=request.FILES
     query_file=fl.get('sound_query','$0')
@@ -42,21 +43,59 @@ def soundsearch(request):
     f.close()
     n=1
     n=len(s)
+    hashk=str(hashlib.sha1(s).hexdigest())
+    hashk+=str(random.randint(5000000,9999999))
+    db=sqlite3.connect("database")
+    cu=db.cursor()
     #print(n)
     channel=grpc.insecure_channel('183.172.193.106:50051')
     stub=movsearch_pb2_grpc.SearchSoundStub(channel)
     response=stub.search(movsearch_pb2.Query(filename=fname,data=s,num=n))
     res_num=response.num
+    db=sqlite3.connect("database")
+    cu=db.cursor()
+    cu.execute('''insert into query(hashkey,result,num,dtype) values("'''+hashk+'''","'''+response.reslist+'''",'''+str(res_num)+''','''+str(1)+''');''')
+    db.commit()
     filename_list=response.reslist.split("@@")
     filename_list.pop()
-    print(filename_list)
-    res="<html>sucess</html>"
-    response=HttpResponse(res)
+    filename_list=filename_list[(page-1)*5:]
+    if len(filename_list)>5:
+        filename_list=filename_list[:5]
+    i=0
+    for i in range(len(filename_list)):
+        filename_temp=filename_list[i].split("/")
+        filename_temp=filename_temp[-2]+"/"+filename_temp[-1]
+        filename_list[i]=filename_list[i].replace('.fft3','.mp4')
+    rlist=list([])
+    for i in range(len(filename_list)):
+        mode=0
+        if mode>0:
+            fileurl="//main//static//video//"+filename_list[i]
+            video=cv2.VideoCapture(fileurl)
+            fps=video.get(cv2.CAP_PROP_FPS)
+            length=int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+            ctlength=int(length/4)
+            for j in range(ctlength):
+                (success,frame)=video.read()
+            (success,frame)=video.read()     
+            filesnap=frame
+        fileurl="/static/video/"
+        fileurl+=filename_list[i]
+        fileurl+=""
+        tempsnap="FAKE_SNAP"
+        retuple={'filename':filename_list[i],'fileurl':fileurl,'filesnap':tempsnap}
+        rlist.append(retuple)
+    template=loader.get_template('result.html')
+    response=HttpResponse(template.render({'page':str(page),'res_count':str(res_num), 'res_duplicate':'0','reslist':rlist},request))
+    response.set_cookie("query_hash",hashk,3600)
+    #print(filename_list)
+    #res="<html>sucess</html>"
+    #response=HttpResponse(res)
     return response
     
 
 def upload(request):
-    #"create table query( hashkey char(200) not null, result text not null, num int);"
+    #"create table query( hashkey char(200) not null, result text not null, num int, dtype int);"
     rq=request.POST
     fl=request.FILES
     query_file=fl.get('query','$0')
@@ -67,7 +106,7 @@ def upload(request):
     for line in query_file.chunks():
         s+=line
     hashk=str(hashlib.sha1(s).hexdigest())
-    hashk+=str(random.randint(1000000,9999999))
+    hashk+=str(random.randint(1000000,4999999))
     db=sqlite3.connect("database")
     cu=db.cursor()
     name=query_file.name
@@ -79,7 +118,7 @@ def upload(request):
     res_num=response.num
     db=sqlite3.connect("database")
     cu=db.cursor()
-    cu.execute('''insert into query(hashkey,result,num) values("'''+hashk+'''","'''+response.reslist+'''",'''+str(res_num)+''');''')
+    cu.execute('''insert into query(hashkey,result,num) values("'''+hashk+'''","'''+response.reslist+'''",'''+str(res_num)+''','''+str(0)+''');''')
     db.commit()
     filename_list=response.reslist.split("@@")
     filename_list.pop()
@@ -133,6 +172,7 @@ def result(request):
     entry=cu.fetchall()[0]
     reslist=entry[1]
     num=int(entry[2])
+    dtype=int(entry[3])
     if (p*5>num):
         return HttpResponse('<script>window.location="1"</script>')
     filename_list=reslist.split("@@")
@@ -141,9 +181,15 @@ def result(request):
     if len(filename_list)>5:
         filename_list=filename_list[:5]
     i=0
-    for i in range(len(filename_list)):
-        filename_list[i]=filename_list[i].replace('./thumbnail/','')
-        filename_list[i]=filename_list[i].replace('.png','.mp4')
+    if dtype==0:
+        for i in range(len(filename_list)):
+            filename_list[i]=filename_list[i].replace('./thumbnail/','')
+            filename_list[i]=filename_list[i].replace('.png','.mp4')
+    else:
+        for i in range(len(filename_list)):
+            filename_temp=filename_list[i].split("/")
+            filename_temp=filename_temp[-2]+"/"+filename_temp[-1]
+            filename_list[i]=filename_list[i].replace('.fft3','.mp4')
     rlist=list([])
     for i in range(len(filename_list)):
         mode=0
