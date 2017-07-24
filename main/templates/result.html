@@ -1,6 +1,40 @@
 ﻿<META http-equiv="Content-Type" content="text/html; charsetutf-8">
 <meta charset="utf-8">
 {% load static %}
+<script>
+    window.onload = function () {
+        var n = parseInt(document.getElementById("res_count").innerHTML);
+        var p = parseInt(document.getElementById("current_page").innerHTML);
+        var d = parseInt(document.getElementById("res_dulplicate").innerHTML);
+        var m = Math.ceil(n / 5);
+        if (m > 20) {
+            m = 20;
+        }
+        var table = document.getElementById("page_table_row");
+        for (i = 1; i <= m; i++) {
+            var s = table.innerHTML;
+            s += "<td>";
+            if (i == p) {
+                s += i.toString();
+                s += "</td>";
+                table.innerHTML = s;
+            }
+            else {
+                if (d == 0) {
+                    s += '<a href="result/';
+                }
+                else {
+                    s += '<a href="';
+                }
+                s += i.toString();
+                s += '">';
+                s += i.toString();
+                s += '</a></td>';
+                table.innerHTML = s;
+            }
+        }
+    }
+</script>
 <html>
 <head>
 
@@ -8,10 +42,13 @@
 </head>
 <body>
     <h1>Result</h1>
-    <p id="res_count" style="visibility:hidden">{{res_count}}</p>
+    <p id="current_page" hidden="hidden">{{page}}</p>
+    <p id="res_count" hidden="hidden">{{res_count}}</p>
+    <p id="res_dulplicate" hidden="hidden">{{res_duplicate}}</p>
     {%if res_count == '0' %}
     <div>Oops! No relevant movies found.</div>
     {%else%}
+    <h3>{{res_count}} Results are found!</h3>
     <ul>
         {%for file in reslist%}
         <li>
@@ -26,5 +63,10 @@
     </ul>
     {%endif%}
     <div style="visibility:hidden"></div>
+    <div id="page_narrator">
+        <table id="page_table">
+            <tr id="page_table_row"></tr>
+        </table>
+    </div>
 </body>
 </html>

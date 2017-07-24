@@ -46,7 +46,7 @@
 <body>
     <h1>Searching for movies</h1>
 <div>
-    <div id="sample" style="visibility:hidden">
+    <div id="sample" hidden="hidden">
     <form role="form" method="post" action="../../dateplace/signup"><p>请输入你的姓名：</p><br />
     <input type="text" name="name" /><br />
     <p>你是男孩子？还是女孩子？</p>
@@ -60,6 +60,7 @@
     <p>Search by picture</p>
     <form method="post" action="../../main/upload" enctype="multipart/form-data" id="file_upload_form">
         <input type="file" name="query" id="file_upload" /><br />
+        <input type="text" name="page" id="page_selector" hidden="hidden" value="1"/>
         <input type="submit" value="SEARCH!" id="search_button" />
     </form>
     </div>
