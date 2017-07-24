@@ -14,4 +14,5 @@ urlpatterns = [
     #url(r'^result$',views.result,name='result'),
     url(r'^upload$',views.upload,name='upload'),
     url(r'^soundsearch$',views.soundsearch,name='soundsearch'),
+    url(r'^result/\d*$',views.result,name='result'),
 ]
