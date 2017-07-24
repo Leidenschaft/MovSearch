@@ -1,0 +1,4 @@
+main/static/thumbnail/*
+main/static/video/*
+*.pyc
+*.jpg

@@ -43,7 +43,7 @@ def soundsearch(request):
     n=1
     n=len(s)
     #print(n)
-    channel=grpc.insecure_channel('101.5.209.114:50051')
+    channel=grpc.insecure_channel('183.172.193.106:50051')
     stub=movsearch_pb2_grpc.SearchSoundStub(channel)
     response=stub.search(movsearch_pb2.Query(filename=fname,data=s,num=n))
     res_num=response.num
