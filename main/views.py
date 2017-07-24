@@ -118,7 +118,7 @@ def upload(request):
     res_num=response.num
     db=sqlite3.connect("database")
     cu=db.cursor()
-    cu.execute('''insert into query(hashkey,result,num) values("'''+hashk+'''","'''+response.reslist+'''",'''+str(res_num)+''','''+str(0)+''');''')
+    cu.execute('''insert into query(hashkey,result,num,dtype) values("'''+hashk+'''","'''+response.reslist+'''",'''+str(res_num)+''','''+str(0)+''');''')
     db.commit()
     filename_list=response.reslist.split("@@")
     filename_list.pop()
