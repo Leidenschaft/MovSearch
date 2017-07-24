@@ -65,7 +65,7 @@ def soundsearch(request):
     for i in range(len(filename_list)):
         filename_temp=filename_list[i].split("/")
         filename_temp=filename_temp[-2]+"/"+filename_temp[-1]
-        filename_list[i]=filename_list[i].replace('.fft3','.mp4')
+        filename_list[i]=filename_temp.replace('.fft3','.mp4')
     rlist=list([])
     for i in range(len(filename_list)):
         mode=0
