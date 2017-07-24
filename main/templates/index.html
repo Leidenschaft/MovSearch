@@ -1,0 +1,75 @@
+﻿{% load static %}
+<script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
+<script>
+    function login() {
+        var name = prompt("客人的名字是？", "");
+        var password = prompt("客人的密码是？", "");
+        if ((name)&&(password)){
+            ajax({
+                type: "POST",
+                url: "/dateplace/login",
+                dataType: "",
+                data: { "name": name, "password": password },
+                beforeSend: function () {
+
+                },
+                success: function (msg) {
+                    if (msg == "ACCEPT") {
+                        var temp = document.createElement("form");
+                        temp.action = "/dateplace/user";
+                        temp.method = "post";
+                        document.body.appendChild(temp);
+                        temp.submit();
+                    }
+                    else {
+                        alert("Wrong Name & Password");
+                    }
+
+                },
+                error: function () {
+                    alert("error")
+                }
+            })
+        }
+        
+    }
+</script>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
+<html>
+<head>
+    <title>MovSearch</title>
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    </head>
+<body>
+    <h1>Searching for movies</h1>
+<div>
+    <div id="sample" style="visibility:hidden">
+    <form role="form" method="post" action="../../dateplace/signup"><p>请输入你的姓名：</p><br />
+    <input type="text" name="name" /><br />
+    <p>你是男孩子？还是女孩子？</p>
+    <input  class="form-contorl" type="radio" name="gender" value="F" checked/>女生<br />
+    <input class="form-contorl" type="radio" name="gender" value="M"/>男生<br />
+    <input class="form-contorl" type="text" name="password" />给自己取一个小密码吧<br />
+    <input class="form-contorl" type="submit" value="第一次的访问者" id="submit_button"><br />
+    </form>
+    </div>
+    <div id="pic_search">
+    <p>Search by picture</p>
+    <form method="post" action="../../main/upload" enctype="multipart/form-data" id="file_upload_form">
+        <input type="file" name="query" id="file_upload" /><br />
+        <input type="submit" value="SEARCH!" id="search_button" />
+    </form>
+    </div>
+    <div id="sound_search">
+        <p>Search by soundtrack</p>
+        <form method="post" action="../../main/soundsearch" enctype="multipart/form-data" id="file_upload_form">
+            <input type="file" name="sound_query" id="sound_file_upload"/><br />
+            <input type="submit" value="SEARCH!" id="sound_search_button" />
+        </form>
+    </div>
+</div>
+</body>
+</html>

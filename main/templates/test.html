@@ -1,0 +1,26 @@
+﻿<META http-equiv="Content-Type" content="text/html; charsetutf-8">
+<meta charset="utf-8">
+{% load static %}
+<script type="text/javascript" src="{% static 'js/test.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{%static 'style/test.css' %}" />
+<html>
+<head>THIS IS TEST INTERFACE<title>Dateplace von Myhome</title></head>
+<body>
+    <p>Q.<span id="question_number">1</span></p><br />
+    <p>你认为<span id="question_place">模型店</span>是一个适合约会的地方吗</p><br />
+    <div>
+    <form id="options">
+    <input type="radio" name="level" id="Highest" value="5" />简直没法更棒╰(*°▽°*)╯<br />
+    <input type="radio" name="level" id="High" value="4"/>很好呀^_^<br />
+    <input type="radio" name="level" id="Medium" value="3"/>如果没有更好的地方的话呢……<br />
+    <input type="radio" name="level" id="Low" value="2"/>真是没办法啊，看在你的面子上>_<<br />
+    <input type="radio" name="level" id="Lowest" value="1"/>去那里就是一场和自己的战斗ToT<br />
+    <input type="radio" name="level" id="Zero" value="0" checked="checked"/>你让我去死好不好╯︿╰<br />
+    </form>
+    </div>
+    <button disabled="disabled" id="previous" onclick="button_previous(options)">上一题</button><span>&nbsp;&nbsp;&nbsp;</span><button id="next" onclick="button_next(options)">下一题</button><br />
+    <p>
+        <img id="picture" src="{% static 'image/1.jpg' %}" alt="你就当这里有张图好了→_→"/>
+    </p>
+</body>
+</html>

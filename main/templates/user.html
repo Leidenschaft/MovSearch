@@ -1,0 +1,39 @@
+﻿{% load static %}
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
+<script type="text/javascript" src="{% static 'js/user.js' %}" charset="UTF-8"></script>
+<script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
+<html>
+<head>CHECK USER STATUS<title>Dateplace von Myhome</title></head>
+<body>
+    <div>
+        欢迎来到MyHome，亲爱的{{ username }}
+    </div>
+    <div>
+    <h2>这些是你关注的{{ s_gender }}</h2>
+        <ul>
+            {% for item in s_list %}
+            <li>{{item}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h2>这些是你关注的{{ d_gender }}</h2>
+         <ul>
+             {% for item in d_list %}
+             <li>{{ item }}</li>
+             {% endfor %}
+         </ul>
+    </div>
+    <div>
+        <p>你有什么感兴趣的人吗？</p>
+        <input type="text" id="follow_search" value=""/><br />
+        <button id="submit_search" onclick="user_search(follow_search.value)">搜索并关注</button>
+    </div>
+    <div>
+        <form method="post" action="../../dateplace/test">
+            <input type="submit" value="现在就进入测试" id="enter_test"><br />
+        </form>
+</div>
+</body>
+</html>

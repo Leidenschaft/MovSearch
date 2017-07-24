@@ -1,0 +1,30 @@
+﻿<META http-equiv="Content-Type" content="text/html; charsetutf-8">
+<meta charset="utf-8">
+{% load static %}
+<html>
+<head>
+
+    <title>MovSearch --Leidenschaft</title>
+</head>
+<body>
+    <h1>Result</h1>
+    <p id="res_count" style="visibility:hidden">{{res_count}}</p>
+    {%if res_count == '0' %}
+    <div>Oops! No relevant movies found.</div>
+    {%else%}
+    <ul>
+        {%for file in reslist%}
+        <li>
+            <p>{{file.filename}}</p><br />
+            <p>{{file.filesnap}}</p>
+            <a href="{{file.fileurl}}">Watch!</a>
+            <video width="320" height="240" controls>
+             <source src={{file.fileurl}} type="video/mp4" />
+            </video>
+        </li>
+        {%endfor%}
+    </ul>
+    {%endif%}
+    <div style="visibility:hidden"></div>
+</body>
+</html>
