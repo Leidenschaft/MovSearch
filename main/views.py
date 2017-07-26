@@ -82,8 +82,12 @@ def soundsearch(request):
         fileurl="/static/video/"
         fileurl+=filename_list[i]
         fileurl+=""
+        if len(filename_list[i].split('/'))>1:
+            fn=filename_list[i].split('/')[1]
+        else:
+            fn=filename_list[i]
         tempsnap="FAKE_SNAP"
-        retuple={'filename':filename_list[i],'fileurl':fileurl,'filesnap':tempsnap}
+        retuple={'filename':fn,'fileurl':fileurl,'filesnap':tempsnap}
         rlist.append(retuple)
     template=loader.get_template('result.html')
     response=HttpResponse(template.render({'page':str(page),'res_count':str(res_num), 'res_duplicate':'0','reslist':rlist},request))
@@ -145,8 +149,12 @@ def upload(request):
         fileurl="/static/video/"
         fileurl+=filename_list[i]
         fileurl+=""
+        if len(filename_list[i].split('/'))>1:
+            fn=filename_list[i].split('/')[1]
+        else:
+            fn=filename_list[i]
         tempsnap="FAKE_SNAP"
-        retuple={'filename':filename_list[i],'fileurl':fileurl,'filesnap':tempsnap}
+        retuple={'filename':fn,'fileurl':fileurl,'filesnap':tempsnap}
         rlist.append(retuple)
     template=loader.get_template('result.html')
     #print(res_num)
@@ -206,8 +214,12 @@ def result(request):
         fileurl="/static/video/"
         fileurl+=filename_list[i]
         fileurl+=""
+        if len(filename_list[i].split('/'))>1:
+            fn=filename_list[i].split('/')[1]
+        else:
+            fn=filename_list[i]
         tempsnap="FAKE_SNAP"
-        retuple={'filename':filename_list[i],'fileurl':fileurl,'filesnap':tempsnap}
+        retuple={'filename':fn,'fileurl':fileurl,'filesnap':tempsnap}
         rlist.append(retuple)
     template=loader.get_template('result.html')
     #print(res_num)
