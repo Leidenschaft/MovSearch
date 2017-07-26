@@ -3,22 +3,22 @@ function loading() {
     var c = document.getElementById('c'),
         
         ctx = c.getContext('2d'),
-        cw = c.width = 400,
-            ch = c.height = 300,
+        cw = c.width = 50,
+        ch = c.height = 50,
         rand = function (a, b) { return ~~((Math.random() * (b - a + 1)) + a); },
         dToR = function (degrees) {
             return degrees * (Math.PI / 180);
         },
         circle = {
-            x: (cw / 2) + 5,
-            y: (ch / 2) + 22,
-            radius: 90,
+            x: (cw / 2) ,
+            y: (ch / 2) ,
+            radius: 20,
             speed: 2,
             rotation: 0,
             angleStart: 270,
             angleEnd: 90,
             hue: 220,
-            thickness: 18,
+            thickness: 5,
             blur: 25
         },
         particles = [],
@@ -56,7 +56,7 @@ function loading() {
                 ctx.save();
                 ctx.translate(circle.x, circle.y);
                 ctx.rotate(dToR(circle.rotation + 185));
-                ctx.scale(1, 1);
+                ctx.scale(0.2, 0.2);
                 ctx.beginPath();
                 ctx.arc(0, circle.radius, 30, 0, Math.PI * 2, false);
                 ctx.closePath();
@@ -71,7 +71,7 @@ function loading() {
             ctx.save();
             ctx.translate(circle.x, circle.y);
             ctx.rotate(dToR(circle.rotation + 165));
-            ctx.scale(1.5, 1);
+            ctx.scale(.3, 0.2);
             ctx.beginPath();
             ctx.arc(0, circle.radius, 25, 0, Math.PI * 2, false);
             ctx.closePath();
