@@ -3,140 +3,90 @@
 <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/prefixfree.min.js' %}"></script>
-<script>
-    function login() {
-        var name = prompt("客人的名字是？", "");
-        var password = prompt("客人的密码是？", "");
-        if ((name) && (password)) {
-            ajax({
-                type: "POST",
-                url: "/dateplace/login",
-                dataType: "",
-                data: { "name": name, "password": password },
-                beforeSend: function () {
+<script type="text/javascript">
 
-                },
-                success: function (msg) {
-                    if (msg == "ACCEPT") {
-                        var temp = document.createElement("form");
-                        temp.action = "/dateplace/user";
-                        temp.method = "post";
-                        document.body.appendChild(temp);
-                        temp.submit();
-                    }
-                    else {
-                        alert("Wrong Name & Password");
-                    }
-
-                },
-                error: function () {
-                    alert("error")
-                }
-            })
-        }
-
-    }
-</script>
-<META http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta charset="utf-8">
+    $('input[id=file_upload]').change(function() {
+        $('#photoCover').val($(this).val());
+    });
+</script>  
 <html>
-<head>
-    <title>MovSearch</title>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Movie Search Engine</title>
+
+    <!-- Bootstrap core CSS -->
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
-    <style>
-        html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-            margin: 0;
-            padding: 0;
-            border: 0;
-            font-size: 100%;
-            font: inherit;
-            vertical-align: baseline;
-        }
+    <!-- Custom styles for this template -->
+    <link href="{% static 'style/cover.css' %}" rel="stylesheet">
 
-        article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
-            display: block;
-        }
+  </head>
 
-        body {
-            line-height: 1;
-        }
-
-        ol, ul {
-            list-style: none;
-        }
-
-        blockquote, q {
-            quotes: none;
-        }
-
-            blockquote:before, blockquote:after, q:before, q:after {
-                content: '';
-                content: none;
-            }
-
-        table {
-            border-collapse: collapse;
-            border-spacing: 0;
-        }
-    </style>
-    <style>
-        
-
-
-        img {
-            display: block;
-            margin: 0 auto;
-        }
-
-        canvas {
-            display: block;
-            margin: 0 auto;
-            /* uncomment to test overlay */
-            /*
-        position: absolute;
-        left: 0;
-        opacity: .5;
-        top: 0;
-        */
-        }
-    </style>
-
-</head>
-<body>
-    <h1>Searching for movies</h1>
-    <div>
-        <canvas id="c" ></canvas>
-    </div>
-    <div>
-        <div id="sample" hidden="hidden">
-            <form role="form" method="post" action="../../dateplace/signup">
-                <p>请输入你的姓名：</p><br />
-                <input type="text" name="name" /><br />
-                <p>你是男孩子？还是女孩子？</p>
-                <input class="form-contorl" type="radio" name="gender" value="F" checked />女生<br />
-                <input class="form-contorl" type="radio" name="gender" value="M" />男生<br />
-                <input class="form-contorl" type="text" name="password" />给自己取一个小密码吧<br />
-                <input class="form-contorl" type="submit" value="第一次的访问者" id="submit_button"><br />
-            </form>
+  <body>
+    <!-- loading -->
+    <div class="modal fade" id="load" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
         </div>
-        <div id="pic_search">
-            <p>Search by picture</p>
-            <form method="post" action="../../main/upload" enctype="multipart/form-data" id="file_upload_form">
-                <input type="file" name="query" id="file_upload" /><br />
+      </div>
+    </div>
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">Movie Search Engine</h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li class="active"><a href="#">Home</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">Searching for movies</h1>
+            <br/>  
+            <form role="form" method="post" action="../../main/upload" enctype="multipart/form-data" id="file_upload_form">
+                <input id="file_upload" type="file" name=query style="display:none"> 
+                <div class="row"> 
+                    <div class="col-lg-1"></div>
+                    <div class="input-group col-lg-10">  
+                        <input id="photoCover" class="form-control" type="text">  
+                        <a class="btn btn-default input-group-addon" onclick="$('input[id=file_upload]').click();">Browse</a>  
+                    </div>  
+                    <div class="col-lg-1"></div>
+                </div>
+            	<br/>  
                 <input type="text" name="page" id="page_selector" hidden="hidden" value="1" />
-                <input type="submit" value="SEARCH!" id="search_button" onclick="loading()" />
+                <div class="row"> 
+                    <div class="col-lg-1"></div>
+                    <input class="btn btn-lg btn-default col-lg-4" type="submit" name="image" value="Search by Image" id="search_button" onclick="loading();" />
+                    <div class="col-lg-2">
+                        <canvas id="c" ></canvas>
+                    </div>
+                    <input class="btn btn-lg btn-default col-lg-4" type="submit" name="audio" value="Search by Audio" id="search_button" onclick="loading();" />
+                </div>
             </form>
+          </div>
+
         </div>
-        <div id="sound_search">
-            <p>Search by soundtrack</p>
-            <form method="post" action="../../main/soundsearch" enctype="multipart/form-data" id="file_upload_form">
-                <input type="file" name="sound_query" id="sound_file_upload" /><br />
-                <input type="submit" value="SEARCH!" id="sound_search_button" onclick="loading()"/>
-            </form>
-        </div>
+
+      </div>
+
     </div>
+    
 </body>
+
+
 </html>

@@ -37,36 +37,77 @@
 </script>
 <html>
 <head>
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>MovSearch --Leidenschaft</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'style/cover.css' %}" rel="stylesheet">
 </head>
 <body>
-    <h1>Result</h1>
-    <p id="current_page" hidden="hidden">{{page}}</p>
-    <p id="res_count" hidden="hidden">{{res_count}}</p>
-    <p id="res_dulplicate" hidden="hidden">{{res_duplicate}}</p>
-    {%if res_count == '0' %}
-    <div>Oops! No relevant movies found.</div>
-    {%else%}
-    <h3>{{res_count}} Results are found!</h3>
-    <ul>
-        {%for file in reslist%}
-        <li>
-            <p>{{file.filename}}</p><br />
-            <p>{{file.filesnap}}</p>
-            <a href="{{file.fileurl}}">Watch!</a>
-            <video width="320" height="240" controls>
-             <source src={{file.fileurl}} type="video/mp4" />
-            </video>
-        </li>
-        {%endfor%}
-    </ul>
-    {%endif%}
-    <div style="visibility:hidden"></div>
-    <div id="page_narrator">
-        <table id="page_table">
-            <tr id="page_table_row"></tr>
-        </table>
+    <div class="modal fade" id="load" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop='static'>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+    <div class="site-wrapper">
+        <div class="site-wrapper-inner">
+            <div class="cover-container">
+                <div class="masthead clearfix">
+                    <div class="inner">
+                        <nav>
+                            <ul class="nav masthead-nav">
+                                <li class="active"><div class="button green"><div class="shine"></div><a href="/">Home</a></div></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <p id="current_page" hidden="hidden">{{page}}</p>
+                <p id="res_count" hidden="hidden">{{res_count}}</p>
+                <p id="res_dulplicate" hidden="hidden">{{res_duplicate}}</p>
+                <div class="inner-cover">
+                    {%if res_count == '0' %}
+                    <h1 class="cover-heading">Oops! No relevant movies found.</h1>
+                    {%else%}
+                    <h1 class="cover-heading">{{res_count}} Results are found!</h1>
+                    <table class="table">
+
+                        {%for file in reslist%}
+
+
+                                <tr>
+                                    <td>
+                                        <p>{{file.filename}}</p><br />
+                                        <p>{{file.filesnap}}</p><br />
+                                        <link rel="stylesheet" type="text/css" href="{% static 'style/button.css' %}" media="screen">
+                                        <p><div class="button red"><div class="shine"></div><a href="{{file.fileurl}}">Watch!</a></div></p>
+                                    </td>
+                                    <td>
+                                        <video width="320" height="240" controls>
+                                            <source src={{file.fileurl}} type="video/mp4" />
+                                        </video>
+                                    </td>
+                                </tr>
+
+                   
+
+                        {%endfor%}
+                    </table>
+                    {%endif%}
+                    <div id="page_narrator">
+                        <table id="page_table">
+                            <tr id="page_table_row"></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
