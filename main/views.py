@@ -17,10 +17,12 @@ import sqlite3
 import hashlib
 import random
 import json
+import sys
 #import cv2
 import video_process
 @csrf_exempt
 # Create your views here.
+
 
 def index(request):
     template = loader.get_template('index.html')
@@ -79,6 +81,22 @@ def soundsearch(request):
                 (success,frame)=video.read()
             (success,frame)=video.read()     
             filesnap=frame
+        tempsnap=["FAKE_INFO"]
+        for j in range(86):
+            cu.execute("select * from movie where id="+str(j)+";")
+            retuple=cu.fetchall()[0]
+            if retuple[8] in filename_list[i]:
+                movname=retuple[1]
+                imdb=retuple[2]
+                score=retuple[3]
+                country=retuple[4]
+                date=retuple[5]
+                link=retuple[6]
+                info=retuple[7]
+                imdb='''IMDb ID:<a href="http://www.imdb.com/title/'''+imdb+'''/">'''+imdb+'''</a>'''
+                link='''<a href="'''+'''https://movie.douban.com/subject/'''+link+'''/">'''+movname+'''</a>'''
+                tempsnap=[link,imdb,score,country,date,info]
+                break
         fileurl="/static/video/"
         fileurl+=filename_list[i]
         fileurl+=""
@@ -86,7 +104,6 @@ def soundsearch(request):
             fn=filename_list[i].split('/')[1]
         else:
             fn=filename_list[i]
-        tempsnap="FAKE_SNAP"
         retuple={'filename':fn,'fileurl':fileurl,'filesnap':tempsnap}
         rlist.append(retuple)
     template=loader.get_template('result.html')
@@ -99,6 +116,13 @@ def soundsearch(request):
     
 
 def upload(request):
+    vs=sys.version_info[0]
+    if vs==2:
+        if request.POST.has_key('audio'):
+            return soundsearch(request)
+    else:
+        if 'audio' in request.POST:
+            return soundsearch(request)
     #"create table query( hashkey char(200) not null, result text not null, num int, dtype int);"
     rq=request.POST
     fl=request.FILES
@@ -146,6 +170,22 @@ def upload(request):
                 (success,frame)=video.read()
             (success,frame)=video.read()     
             filesnap=frame
+        tempsnap=["FAKE_INFO"]
+        for j in range(86):
+            cu.execute("select * from movie where id="+str(j)+";")
+            retuple=cu.fetchall()[0]
+            if retuple[8] in filename_list[i]:
+                movname=retuple[1]
+                imdb=retuple[2]
+                score=retuple[3]
+                country=retuple[4]
+                date=retuple[5]
+                link=retuple[6]
+                info=retuple[7]
+                imdb='''IMDb ID:<a href="http://www.imdb.com/title/'''+imdb+'''/">'''+imdb+'''</a>'''
+                link='''<a href="'''+'''https://movie.douban.com/subject/'''+link+'''/">'''+movname+'''</a>'''
+                tempsnap=[link,imdb,score,country,date,info]
+                break
         fileurl="/static/video/"
         fileurl+=filename_list[i]
         fileurl+=""
@@ -153,7 +193,6 @@ def upload(request):
             fn=filename_list[i].split('/')[1]
         else:
             fn=filename_list[i]
-        tempsnap="FAKE_SNAP"
         retuple={'filename':fn,'fileurl':fileurl,'filesnap':tempsnap}
         rlist.append(retuple)
     template=loader.get_template('result.html')
@@ -211,6 +250,22 @@ def result(request):
                 (success,frame)=video.read()
             (success,frame)=video.read()     
             filesnap=frame
+        tempsnap=["FAKE_INFO"]
+        for j in range(86):
+            cu.execute("select * from movie where id="+str(j)+";")
+            retuple=cu.fetchall()[0]
+            if retuple[8] in filename_list[i]:
+                movname=retuple[1]
+                imdb=retuple[2]
+                score=retuple[3]
+                country=retuple[4]
+                date=retuple[5]
+                link=retuple[6]
+                info=retuple[7]
+                imdb='''IMDb ID:<a href="http://www.imdb.com/title/'''+imdb+'''/">'''+imdb+'''</a>'''
+                link='''<a href="'''+'''https://movie.douban.com/subject/'''+link+'''/">'''+movname+'''</a>'''
+                tempsnap=[link,imdb,score,country,date,info]
+                break
         fileurl="/static/video/"
         fileurl+=filename_list[i]
         fileurl+=""
@@ -218,7 +273,6 @@ def result(request):
             fn=filename_list[i].split('/')[1]
         else:
             fn=filename_list[i]
-        tempsnap="FAKE_SNAP"
         retuple={'filename':fn,'fileurl':fileurl,'filesnap':tempsnap}
         rlist.append(retuple)
     template=loader.get_template('result.html')
